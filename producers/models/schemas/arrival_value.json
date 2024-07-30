@@ -1,7 +1,7 @@
 {
-  "namespace": "com.udacity.staion",
   "type": "record",
   "name": "arrival.value",
+  "namespace": "com.udacity.station",
   "fields": [
     {
       "name": "station_id",
@@ -27,7 +27,7 @@
       "name": "prev_station_id",
       "type": [
         "null",
-        "string"
+        "int"
       ]
     },
     {

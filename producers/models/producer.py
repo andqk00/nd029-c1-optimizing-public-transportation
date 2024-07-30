@@ -38,8 +38,11 @@ class Producer:
         #
         #
         self.broker_properties = {
-            "bootstrap.servers": "PLAINTEXT://localhost:9092",
-            "schema.registry.url": "http://localhost:8081",
+            # TODO
+            "bootstrap.servers" : "PLAINTEXT://localhost:9092,PLAINTEXT://localhost:9093,PLAINTEXT://localhost:9094",
+            # TODO
+            "schema.registry.url" : "http://localhost:8081",
+            # TODO
             "default.topic.config": {
                 "acks": "all"
             }
@@ -54,7 +57,7 @@ class Producer:
         self.producer = AvroProducer(
             self.broker_properties,
             default_key_schema=self.key_schema,
-            default_value_schema=self.value_schema    
+            default_value_schema=self.value_schema
         )
 
     def create_topic(self):
@@ -77,6 +80,7 @@ class Producer:
                     replication_factor=self.num_replicas
                 )
             ])
+        logger.info("topic creation kafka integration incomplete - skipping")
 
     def time_millis(self):
         return int(round(time.time() * 1000))
@@ -89,6 +93,7 @@ class Producer:
         #
         #
         self.producer.flush()
+        logger.info("producer close incomplete - skipping")
 
     def time_millis(self):
         """Use this function to get the key for Kafka Events"""

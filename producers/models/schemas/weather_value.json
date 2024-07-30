@@ -1,10 +1,10 @@
 {
-  "namespace": "com.udacity.weather",
   "type": "record",
   "name": "weather.value",
+  "namespace": "com.udacity.weather",
   "fields": [
     {
-      "name": "tempature",
+      "name": "temperature",
       "type": "int"
     },
     {

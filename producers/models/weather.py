@@ -13,7 +13,6 @@ from models.producer import Producer
 
 logger = logging.getLogger(__name__)
 
-topic_name = "org.chicago.cta.weather.v1"
 
 class Weather(Producer):
     """Defines a simulated weather model"""
@@ -33,14 +32,16 @@ class Weather(Producer):
     def __init__(self, month):
         #
         #
-        # TODO: Complete the below by deciding on a topic name, number of partitions, and number of
+        # TODO: Complete the below by deciding number of partitions, and number of
         # replicas
         #
         #
         super().__init__(
-            topic_name, # TODO: Come up with a better topic name
+            "org.chicago.cta.weather.v1",
             key_schema=Weather.key_schema,
             value_schema=Weather.value_schema,
+            num_partitions=1,
+            num_replicas=1
         )
 
         self.status = Weather.status.sunny
@@ -87,7 +88,7 @@ class Weather(Producer):
            # TODO: What URL should be POSTed to?
            #
            #
-           f"{Weather.rest_proxy_url}/topics/{topic_name}",
+           f"{Weather.rest_proxy_url}/topics/{self.topic_name}",
            #
            #
            # TODO: What Headers need to bet set?
@@ -101,7 +102,7 @@ class Weather(Producer):
                    # TODO: Provide key schema, value schema, and records
                    #
                    #
-                   "key_schema":json.dumps(Weather.key_schema),
+                    "key_schema":json.dumps(Weather.key_schema),
                     "value_schema": json.dumps(Weather.value_schema),
                     "records": 
                         [{
@@ -111,7 +112,7 @@ class Weather(Producer):
                                 "status"      : self.status.name
                             }
                         }]
-                }
+               }
            ),
         )
         resp.raise_for_status()

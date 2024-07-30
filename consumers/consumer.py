@@ -2,7 +2,7 @@
 import logging
 
 import confluent_kafka
-from confluent_kafka import Consumer, OFFSET_BEGINNING
+from confluent_kafka import Consumer
 from confluent_kafka.avro import AvroConsumer
 from confluent_kafka.avro.serializer import SerializerError
 from tornado import gen
@@ -37,7 +37,10 @@ class KafkaConsumer:
         #
         #
         self.broker_properties = {
-            "bootstrap.servers": "PLAINTEXT://localhost:9092",
+                #
+                # TODO
+                #
+            "bootstrap.servers": "PLAINTEXT://localhost:9092,PLAINTEXT://localhost:9093,PLAINTEXT://localhost:9094",
             "group.id": self.topic_name_pattern,
             "default.topic.config": {
                 "acks": "all",
@@ -51,6 +54,7 @@ class KafkaConsumer:
             self.consumer = AvroConsumer(self.broker_properties)
         else:
             self.consumer = Consumer(self.broker_properties)
+            pass
 
         #
         #
@@ -66,13 +70,14 @@ class KafkaConsumer:
         # the beginning or earliest
         logger.info("on_assign is incomplete - skipping")
         for partition in partitions:
+            pass
             #
             #
             # TODO
             #
             #
-            if self.offset_earliest:
-                partition.offset = OFFSET_BEGINNING
+            if self.offset_earliest is True:
+                partitions.offset = confluent_kafka.OFFSET_BEGINNING
 
         logger.info("partitions assigned for %s", self.topic_name_pattern)
         consumer.assign(partitions)
@@ -104,9 +109,10 @@ class KafkaConsumer:
                     logger.error(message.error())
                     return 0
             else:
-                logger.debug("Received 0 message by consumer")
+                logger.debug("no message received by consumer")
                 return 0
         except SerializerError as e:
+            logger.info("_consume is incomplete - skipping")
             logger.error(f"Message deserialization failed for {message} : {e}")
             return 0
 

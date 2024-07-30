@@ -39,7 +39,7 @@ def configure_connector():
                "value.converter.schemas.enable": "false",
                "batch.max.rows": "500",
                # TODO
-               "connection.url": "jdbc:postgres://localhost:5432/cta",
+               "connection.url": "jdbc:postgresql://localhost:5432/cta",
                # TODO
                "connection.user": "cta_admin",
                # TODO
@@ -50,10 +50,9 @@ def configure_connector():
                "mode": "incrementing",
                # TODO
                "incrementing.column.name": "stop_id",
-               # TODO
                "topic.prefix": "org.chicago.cta.",
                # TODO
-               "poll.interval.ms": "600000",
+               "poll.interval.ms": "900000",
            }
        }),
     )

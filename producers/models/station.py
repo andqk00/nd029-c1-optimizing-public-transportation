@@ -62,10 +62,16 @@ class Station(Producer):
         # TODO: Complete this function by producing an arrival message to Kafka
         #
         #
+        logger.info("arrival kafka integration incomplete - skipping")
         self.producer.produce(
            topic=self.topic_name,
            key={"timestamp": self.time_millis()},
            value={
+               #
+               #
+               # TODO: Configure this
+               #
+               #
                "station_id": self.station_id,
                "train_id": train.train_id,
                "direction": direction,

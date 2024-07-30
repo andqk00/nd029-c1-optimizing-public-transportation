@@ -39,7 +39,7 @@ out_topic = app.topic("org.chicago.cta.stations.table.v1", partitions=1)
 # TODO: Define a Faust Table
 table = app.Table(
    "org.chicago.cta.stations.table.v1",
-   default=int,
+   default=TransformedStation,
    partitions=1,
    changelog_topic=out_topic,
 )
@@ -52,7 +52,7 @@ table = app.Table(
 # then you would set the `line` of the `TransformedStation` record to the string `"red"`
 #
 #
-@app.agent(out_topic)
+@app.agent(topic)
 async def transform_station(stations):
     async for station in stations:
         if (station.red):
@@ -62,13 +62,12 @@ async def transform_station(stations):
         elif (station.green):
             line = "green"
 
-        transformed_station = TransformedStation(
+        table[station.station_id] = TransformedStation(
             station_id=station.station_id,
             station_name=station.station_name,
             order=station.order,
             line=line
         )
-        await out_topic.send(key=station.station_id, value=transformed_station)
 
 if __name__ == "__main__":
     app.main()
