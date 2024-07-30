@@ -69,7 +69,7 @@ class Producer:
             "bootstrap.servers": self.broker_properties["bootstrap.servers"]
         })
         list_topics = admin_client.list_topics(timeout=5)
-        if self.topic_name not in list_topics:
+        if self.topic_name not in list_topics.topics:
             admin_client.create_topics([
                 NewTopic(
                     topic=self.topic_name,

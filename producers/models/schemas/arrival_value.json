@@ -1,11 +1,11 @@
 {
-  "namespace": "com.udacity",
+  "namespace": "com.udacity.staion",
   "type": "record",
   "name": "arrival.value",
   "fields": [
     {
       "name": "station_id",
-      "type": "string"
+      "type": "int"
     },
     {
       "name": "train_id",
